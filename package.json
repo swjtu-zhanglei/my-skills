@@ -1,0 +1,30 @@
+{
+  "name": "my-skills",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal agent skills: Fowler Refactoring + Myers Art of Software Testing. Install via npx skills for OpenCode, Claude Code, Codex, and 50+ agents.",
+  "keywords": [
+    "agent-skills",
+    "skills.sh",
+    "opencode",
+    "claude-code",
+    "codex",
+    "refactoring",
+    "software-testing"
+  ],
+  "license": "MIT",
+  "files": [
+    "fowler-refactoring/**",
+    "myers-art-of-software-testing/**",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "list": "npx skills add . -l",
+    "install:local": "npx skills add . --all -y",
+    "install:global": "npx skills add . --all -g -y",
+    "install:opencode": "npx skills add . --all -a opencode -y",
+    "install:claude": "npx skills add . --all -a claude-code -y",
+    "install:codex": "npx skills add . --all -a codex -y"
+  }
+}
