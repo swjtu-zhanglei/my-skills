@@ -1,265 +1,225 @@
-# my-skills
+<div align="center">
 
-个人 Agent Skill 仓库：把书里的方法做成可安装、可复用的 agent 能力。
+# 🛠️ my-skills
 
-| Skill | 做什么 | 触发场景 |
-|-------|--------|----------|
-| **fowler-refactoring** | Fowler《重构》第 2 版：坏味道识别、重构技法、两顶帽子 | 重构、去坏味道、改善设计且不改行为 |
-| **myers-art-of-software-testing** | Myers《软件测试的艺术》第 3 版：操作型用例设计 | 为函数/模块/API 设计测试用例 |
+**English** | [简体中文](./README.zh-CN.md)
 
-通过统一 CLI 安装（[skills.sh](https://skills.sh/) / [vercel-labs/skills](https://github.com/vercel-labs/skills)）：
+![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+![Skills](https://img.shields.io/badge/skills-2-brightgreen.svg)
+![Agents](https://img.shields.io/badge/agents-Claude%20Code%20%7C%20OpenCode%20%7C%20Codex%20%7C%20Hermes%20%7C%20OpenClaw%20%2B50-orange.svg)
 
-```bash
-npx skills add <来源>
-```
+📖 Classic software engineering books, distilled into **operational, installable agent skills** —
+not book summaries, but workflows your coding agent actually executes.
 
-支持 **OpenCode**、**Claude Code**、**Codex**，以及 Cursor / Copilot 等 50+ agent。
+</div>
 
 ---
 
-## 目录结构
+## 📚 Skills
 
-```
-my-skills/
-├── README.md
-├── LICENSE
-├── package.json
-├── fowler-refactoring/
-│   └── SKILL.md
-└── myers-art-of-software-testing/
-    └── SKILL.md
-```
+| Skill | 📕 Source | ⚙️ What it does | 💬 Triggers on |
+|-------|-----------|-----------------|----------------|
+| 🔧 [**fowler-refactoring**](./fowler-refactoring/SKILL.md) | Fowler, *Refactoring* 2nd ed. | Diagnoses code smells (24-smell map), picks catalog techniques, executes in verified baby steps under the Two-Hats rule | "refactor this", "code smells?", "clean up without changing behavior" |
+| 🧪 [**myers-art-of-software-testing**](./myers-art-of-software-testing/SKILL.md) | Myers, *The Art of Software Testing* 3rd ed. | Designs destructive test cases: black-box EP + BVA + cause-effect, then white-box branch fill-in; unit and multi-module seam recipes; fixed case tables | "design test cases", "write tests for", "review my test suite" |
 
-每个 skill 是独立文件夹，内含带 YAML frontmatter 的 `SKILL.md`（`name` + `description`）。  
-CLI 会扫描仓库里所有这类文件夹。
+Each skill folder contains a `SKILL.md` (YAML frontmatter + operational
+instructions) and a `references/` directory loaded on demand — following the
+[progressive-disclosure structure](https://github.com/anthropics/skills) used
+by official skill repositories.
 
-本仓库与 `.opencode/skill/` 使用**各自独立副本**（无 symlink）。改 skill 后两边需分别更新，或以本仓库为准再 `cp` / `npx skills add .`。
-
----
-
-## 安装
-
-### 前置
-
-- 已安装 Node.js（建议 18+）
-- 用 `npx` 即可，不必全局安装 `skills`
-
-### 方式一：从本地路径安装（本仓库）
+## 🚀 Quick Start
 
 ```bash
-# 进入本仓库
+# install all skills into the current project, for all detected agents
+npx skills add <YOUR_USER>/my-skills --all -y
+
+# or globally (all projects on this machine)
+npx skills add <YOUR_USER>/my-skills --all -g -y
+```
+
+Powered by the [skills CLI](https://github.com/vercel-labs/skills) ([skills.sh](https://skills.sh/)). ⚡
+
+## 🤖 Supported Agents
+
+| Agent | 📦 Install command | 📂 Skills directory (project / user) |
+|-------|--------------------|--------------------------------------|
+| **Claude Code** | `npx skills add . --all -a claude-code -y` | `.claude/skills/` · `~/.claude/skills/` |
+| **OpenCode** | `npx skills add . --all -a opencode -y` | `.opencode/skill/` · `~/.config/opencode/skill/` |
+| **Codex** | `npx skills add . --all -a codex -y` | `.agents/skills/` · `~/.codex/skills/` |
+| **Hermes Agent** | `npx skills add . --all -a '*' -y` | auto-detected — check with `npx skills list` |
+| **OpenClaw** | manual copy (below) | `<workspace>/skills/` · `~/.openclaw/skills/` |
+| Cursor / Copilot / Gemini CLI / 50+ more | `npx skills add . --all -a '*' -y` | see `npx skills list` |
+
+> 💡 After installing, **restart the agent session** so new skills are discovered.
+
+<details>
+<summary><b>🧰 Full install matrix (local path, GitHub, single skill, manual copy)</b></summary>
+
+### From a local clone
+
+```bash
 cd /path/to/my-skills
 
-# 查看有哪些 skill
-npx skills add . -l
-
-# 安装全部 → 当前项目（project-local）
-npx skills add . --all -y
-
-# 安装全部 → 用户全局（所有项目可用）
-npx skills add . --all -g -y
-
-# 只装某一个
-npx skills add . --skill fowler-refactoring -y
+npx skills add . -l                      # list available skills
+npx skills add . --all -y                # all skills → current project
+npx skills add . --all -g -y             # all skills → user global
+npx skills add . --skill fowler-refactoring -y            # one skill
 npx skills add . --skill myers-art-of-software-testing -y
+npx skills add . --all -a '*' -y         # every detected agent at once
 ```
 
-**指定 agent：**
+Or use the npm shortcuts:
 
 ```bash
-# OpenCode
-npx skills add . --all -a opencode -y
-
-# Claude Code
-npx skills add . --all -a claude-code -y
-
-# Codex
-npx skills add . --all -a codex -y
-
-# 一次装到所有已识别的 agent
-npx skills add . --all -a '*' -y
+npm run list              # list skills
+npm run install:local     # current project
+npm run install:global    # user global (-g)
+npm run install:claude    # Claude Code only
+npm run install:opencode  # OpenCode only
+npm run install:codex     # Codex only
 ```
 
-**package.json 快捷脚本**（在 `my-skills/` 下）：
+### From GitHub
 
 ```bash
-npm run list              # 列出 skill
-npm run install:local     # 当前项目
-npm run install:global    # 全局 -g
-npm run install:opencode  # 仅 OpenCode
-npm run install:claude    # 仅 Claude Code
-npm run install:codex     # 仅 Codex
-```
-
-### 方式二：从 GitHub 安装（推远程后）
-
-把 `YOUR_USER` 换成你的 GitHub 用户名：
-
-```bash
-# 全部 skill，当前项目
 npx skills add YOUR_USER/my-skills --all -y
-
-# 全部 skill，全局
 npx skills add YOUR_USER/my-skills --all -g -y
-
-# 单个 skill
 npx skills add YOUR_USER/my-skills --skill fowler-refactoring -y
-npx skills add YOUR_USER/my-skills --skill myers-art-of-software-testing -y
-
-# 指定 agent
-npx skills add YOUR_USER/my-skills --all -a opencode -y
-npx skills add YOUR_USER/my-skills --all -a claude-code -y
-npx skills add YOUR_USER/my-skills --all -a codex -y
-
-# 完整 URL
 npx skills add https://github.com/YOUR_USER/my-skills --all -y
 ```
 
-### 方式三：手动复制（不依赖 npx）
+### Manual copy (no npx)
 
-| Agent | 项目级目录 | 用户级目录 |
-|-------|------------|------------|
-| OpenCode | `.opencode/skill/<name>/` | `~/.config/opencode/skill/<name>/` |
-| Claude Code | `.claude/skills/<name>/` | `~/.claude/skills/<name>/` |
-| Codex | `.agents/skills/<name>/` | `~/.codex/skills/<name>/` |
+Each skill folder (including `references/`) must be copied whole:
 
 ```bash
-# OpenCode 项目级（真实目录拷贝，不要用 symlink）
-mkdir -p /your/project/.opencode/skill
-cp -R fowler-refactoring myers-art-of-software-testing /your/project/.opencode/skill/
-
-# Claude Code 用户级
+# Claude Code (user-level)
 mkdir -p ~/.claude/skills
 cp -R fowler-refactoring myers-art-of-software-testing ~/.claude/skills/
 
-# Codex 用户级
+# OpenCode (project-level; real copies, not symlinks)
+mkdir -p /your/project/.opencode/skill
+cp -R fowler-refactoring myers-art-of-software-testing /your/project/.opencode/skill/
+
+# Codex (user-level)
 mkdir -p ~/.codex/skills
 cp -R fowler-refactoring myers-art-of-software-testing ~/.codex/skills/
+
+# OpenClaw (user-level)
+mkdir -p ~/.openclaw/skills
+cp -R fowler-refactoring myers-art-of-software-testing ~/.openclaw/skills/
 ```
 
-每个目录里必须有 `SKILL.md`。复制后**重启 agent 会话**以便发现新 skill。
+For Hermes Agent, copy the skill folders into its skills directory per its
+documentation, keeping the same folder layout.
 
-### 更新与卸载
+### Update / uninstall
 
 ```bash
-npx skills update -y
-npx skills update fowler-refactoring myers-art-of-software-testing -g -y
 npx skills list
+npx skills update -y
 npx skills remove fowler-refactoring
 npx skills remove myers-art-of-software-testing
 ```
 
-### 安装后文件落在哪
+</details>
 
-| Agent | 常见路径 |
-|-------|----------|
-| OpenCode 项目 | `.opencode/skill/<name>/` |
-| OpenCode 全局 | `~/.config/opencode/skill/<name>/` |
-| Claude Code | `~/.claude/skills/<name>/` 或 `.claude/skills/` |
-| Codex | `~/.codex/skills/<name>/` |
+## 💬 Usage
 
-`-g` = 全局；不加 = 当前项目。`-a <agent>` = 只装到指定 agent。
+Skills trigger on natural language — describe the task, or name the skill explicitly.
+They answer **in your language** (English, 中文, …). 🌏
 
----
-
-## 使用
-
-安装成功后，在对应 agent 里用**自然语言触发**，或显式点名 skill。
-
-### fowler-refactoring（重构）
-
-**适用：** 坏味道识别、重构手法选择、两顶帽子（加功能 vs 重构）。
-
-**示例提示词：**
+**🔧 fowler-refactoring**
 
 ```text
-用 fowler-refactoring：这段函数有哪些坏味道？优先用哪些重构手法？
+Refactor this function — what smells does it have and which techniques apply?
 
-对下面类做 Extract Function / Move Method，保持行为不变。
+Do an Extract Class on this file, baby steps, behavior unchanged.
 
-按两顶帽子：先只重构，不要加功能。
+Should I refactor this module now or after the release?
 ```
 
-### myers-art-of-software-testing（测试用例设计）
-
-**适用：** 单函数/多模块用例设计；评审已有用例是否缺边界。
-
-**示例提示词：**
+**🧪 myers-art-of-software-testing**
 
 ```text
-用 myers-art-of-software-testing 为下面函数设计测试用例：
-def is_isosceles_triangle(a, b, c) -> bool: ...
+Design test cases for: def is_isosceles_triangle(a, b, c) -> bool
 
-按 Myers：黑盒 EP+BVA，输出用例表（ID/Inputs/Expected/Tech/Pri）。
+Black-box EP+BVA, output the case table (ID/Inputs/Expected/Tech/Pri).
 
-这是两个模块 A→B，按多模块 PATH 出 seam 用例和失败传播用例。
+Two modules A→B: give me seam cases and failure-propagation threads.
 
-评审我这组用例，缺什么补什么（表格）。
+Review my existing test suite — what's missing?
 ```
 
-**期望输出：** 用例**表格**（非长文）；含无效类/边界；有依赖写 Stub；多模块写接缝表。
+> 📋 Expected output style: **tables, not essays** — diagnosis tables, case tables,
+> stub maps, with explicit priorities and one-line coverage notes.
 
-### 在各产品里怎么叫到 skill
+## 📁 Repository Structure
 
-| 产品 | 怎么用 |
-|------|--------|
-| **OpenCode** | 安装后可被发现；对话描述任务，或 `/myers-art-of-software-testing` / 点名 skill |
-| **Claude Code** | 装到 skills 目录后自动可发现；说「用 myers 设计用例」 |
-| **Codex** | 装到 Codex skills 后，在任务里写 skill 意图；或 `npx skills use .@myers-art-of-software-testing` |
-
-不确定是否装上：
-
-```bash
-npx skills list
 ```
+my-skills/
+├── README.md                 # English (this file)
+├── README.zh-CN.md           # 简体中文
+├── LICENSE
+├── package.json
+├── fowler-refactoring/
+│   ├── SKILL.md              # operational workflow (always loaded)
+│   └── references/
+│       ├── smell-map.md      # 24 smells → techniques (loaded on demand)
+│       └── techniques.md     # chapter digests + technique index
+└── myers-art-of-software-testing/
+    ├── SKILL.md
+    └── references/
+        └── examples.md       # worked examples + method cheatsheet
+```
+
+## ➕ Adding a New Skill
+
+1. 📝 Create `<skill-name>/SKILL.md` with `name` + `description` frontmatter.
+   Write the description in third person with explicit trigger phrases
+   ("MUST use when the user asks to …").
+2. ✂️ Keep `SKILL.md` operational and lean (workflow, output format, anti-patterns,
+   done criteria); move bulky reference tables into `<skill-name>/references/*.md`.
+3. ✅ Test locally: `npx skills add . -l`, install, restart the agent, trigger it.
+4. 📣 Add the skill to the table in both READMEs and to `files` in `package.json`.
+
+## ❓ FAQ
+
+<details>
+<summary><b><code>npx skills add . -l</code> doesn't show my skill</b></summary>
+
+The folder needs a `SKILL.md` with `name` and `description` frontmatter.
+</details>
+
+<details>
+<summary><b>Installed but the agent doesn't load it</b></summary>
+
+Restart the session. Verify the target directory with `-a claude-code|opencode|codex`.
+Project-level skills must be installed inside that project.
+</details>
+
+<details>
+<summary><b>Project vs global?</b></summary>
+
+Project-level affects only the current repo; `-g` affects every project on the machine.
+</details>
+
+<details>
+<summary><b>Skills are in English — will they work in Chinese conversations?</b></summary>
+
+Yes. Skill bodies are English for reliable triggering, but every skill is
+instructed to respond in the user's language.
+</details>
+
+## 📄 License
+
+MIT. Skill bodies are method distillations for agent use; please respect the
+original books' copyright — no full-book redistribution.
 
 ---
 
-## 推到 GitHub（可选）
+<div align="center">
 
-```bash
-cd my-skills
-git remote add origin git@github.com:YOUR_USER/my-skills.git
-git branch -M main
-git push -u origin main
-git tag v1.0.0 && git push origin v1.0.0
-```
+⭐ If these skills help you, consider giving the repo a star!
 
-之后：
-
-```bash
-npx skills add YOUR_USER/my-skills --all -g -y
-```
-
----
-
-## 开发与维护
-
-1. 以 `my-skills/<skill>/SKILL.md` 为源。  
-2. 父项目 `.opencode/skill/` 是**独立副本**：改完后执行  
-   `cp -R fowler-refactoring myers-art-of-software-testing ../.opencode/skill/`  
-   或在目标项目 `npx skills add /path/to/my-skills --all -y`。  
-3. 改 frontmatter 的 `name`/`description` 会影响触发，改后重装。  
-4. 发版：`commit` → `tag vX.Y.Z` → `push`。
-
----
-
-## 常见问题
-
-**Q: `npx skills add . -l` 看不到 skill？**  
-A: 确认目录下有 `SKILL.md`，且含 `name`、`description` frontmatter。
-
-**Q: 装了但 agent 不加载？**  
-A: 重启会话；用 `-a opencode|claude-code|codex` 确认目录；项目级 skill 须在该项目下安装。
-
-**Q: 项目级 vs 全局？**  
-A: 项目级只影响当前仓库；`-g` 影响本机所有项目。
-
-**Q: 能否只给 Claude、不给 Codex？**  
-A: `npx skills add . --all -a claude-code -y`。
-
----
-
-## License
-
-MIT。Skill 正文为方法蒸馏，供 agent 使用；请尊重原书版权，勿整书再分发。
+</div>

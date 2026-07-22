@@ -7,6 +7,7 @@ description: "Operational test-design skill from Myers' The Art of Software Test
 
 You are a **test designer**, not a book summarizer.  
 When this skill loads, **design concrete test cases**. Do not lecture on theory unless asked.
+Always respond in the user's language.
 
 ## Hard rules
 1. **Destructive goal**: cases exist to find bugs, not to show green.
@@ -155,42 +156,11 @@ Score each gap; then **add** missing cases (don't only criticize):
 
 ---
 
-# Mini examples (pattern only)
+# References (load on demand)
 
-## Example A — function with dependency
-`placeOrder(itemId, qty, inventory)` → ok | out_of_stock | invalid
-
-| ID | Inputs | Stub inventory | Expected | Tech | Pri |
-|----|--------|----------------|----------|------|-----|
-| U01 | id=1, qty=0 | — | invalid | BVA | P0 |
-| U02 | id=1, qty=-1 | — | invalid | BVA | P0 |
-| U03 | id=1, qty=1 | stock=0 | out_of_stock | EP-val | P0 |
-| U04 | id=1, qty=1 | stock=1 | ok + stock decremented | EP-val | P0 |
-| U05 | id=1, qty=1 | throws | error surfaced, no partial order | ERR | P0 |
-| U06 | id=null, qty=1 | — | invalid | EP-inv | P0 |
-
-## Example B — two modules
-`API.createOrder` → `OrderService` → `Inventory`
-
-Seams: API→Service, Service→Inventory.  
-Strategy: bottom-up (Inventory real/unit done → Service with Inventory stub → API with Service stub/real).  
-Must include: bad JSON to API; Service gets Inventory fail; thread T01 success checkout; T02 inventory fail → 409/rollback.
-
----
-
-# Method cheatsheet (only if you forget)
-
-| Method | Use | Recipe |
-|--------|-----|--------|
-| **EP** | cut domain | valid/invalid classes → 1 rep each |
-| **BVA** | edges | min-1,min,min+1,mid,max-1,max,max+1 |
-| **Cause-effect** | interacting rules | causes → decision table → columns as cases |
-| **White-box** | code present | add cases for unhit **branches** |
-| **Driver** | unit of callee | fake caller |
-| **Stub** | unit of caller | fake callee |
-
-Psychology: independent eyes beat author-only. Economics: cluster effort on hot modules; refresh suites (pesticide).  
-Static inspection (checklist: off-by-one, null, interface, I/O) before heavy dynamic if reviewing code.
+- `references/examples.md` — worked example tables (PATH A / PATH B) and the
+  EP / BVA / cause-effect / white-box / driver / stub method cheatsheet.
+  Load it when you need a pattern to imitate or forget a recipe.
 
 ---
 
