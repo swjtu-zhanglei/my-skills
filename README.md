@@ -5,11 +5,11 @@
 **English** | [简体中文](./README.zh-CN.md)
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
-![Skills](https://img.shields.io/badge/skills-2-brightgreen.svg)
+![Skills](https://img.shields.io/badge/skills-3-brightgreen.svg)
 ![Agents](https://img.shields.io/badge/agents-Claude%20Code%20%7C%20OpenCode%20%7C%20Codex%20%7C%20Hermes%20%7C%20OpenClaw%20%2B50-orange.svg)
 
-📖 Classic software engineering books, distilled into **operational, installable agent skills** —
-not book summaries, but workflows your coding agent actually executes.
+📖 Classic software engineering books and field practice, distilled into **operational, installable agent skills** —
+not summaries, but workflows your coding agent actually executes.
 
 </div>
 
@@ -21,9 +21,11 @@ not book summaries, but workflows your coding agent actually executes.
 |-------|-----------|-----------------|----------------|
 | 🔧 [**fowler-refactoring**](./fowler-refactoring/SKILL.md) | Fowler, *Refactoring* 2nd ed. | Diagnoses code smells (24-smell map), picks catalog techniques, executes in verified baby steps under the Two-Hats rule | "refactor this", "code smells?", "clean up without changing behavior" |
 | 🧪 [**myers-art-of-software-testing**](./myers-art-of-software-testing/SKILL.md) | Myers, *The Art of Software Testing* 3rd ed. | Designs destructive test cases: black-box EP + BVA + cause-effect, then white-box branch fill-in; unit and multi-module seam recipes; fixed case tables | "design test cases", "write tests for", "review my test suite" |
+| 🔍 [**git-diff-review**](./git-diff-review/SKILL.md) | Field practice (agent handoff & code review) | Shows every change as real line-by-line `git diff` — stat summary, per-file hunks, risk-ordered review points, verification evidence; no full-file before/after dumps | "show me the diff", "what changed?", "review this branch/commit/PR" |
 
 Each skill folder contains a `SKILL.md` (YAML frontmatter + operational
-instructions) and a `references/` directory loaded on demand — following the
+instructions); bulky tables move into an optional `references/` directory loaded
+on demand — following the
 [progressive-disclosure structure](https://github.com/anthropics/skills) used
 by official skill repositories.
 
@@ -48,6 +50,7 @@ Powered by the [skills CLI](https://github.com/vercel-labs/skills) ([skills.sh](
 | **Codex** | `npx skills add . --all -a codex -y` | `.agents/skills/` · `~/.codex/skills/` |
 | **Hermes Agent** | `npx skills add . --all -a '*' -y` | auto-detected — check with `npx skills list` |
 | **OpenClaw** | manual copy (below) | `<workspace>/skills/` · `~/.openclaw/skills/` |
+| **DSH** (DeepSeek Harness) | `npm run install:dsh` | `~/.agents/skills/` (shared root; `-a codex` target) |
 | Cursor / Copilot / Gemini CLI / 50+ more | `npx skills add . --all -a '*' -y` | see `npx skills list` |
 
 > 💡 After installing, **restart the agent session** so new skills are discovered.
@@ -77,6 +80,7 @@ npm run install:global    # user global (-g)
 npm run install:claude    # Claude Code only
 npm run install:opencode  # OpenCode only
 npm run install:codex     # Codex only
+npm run install:dsh       # ~/.agents/skills/ (read by DSH, Codex, Cursor, ...)
 ```
 
 ### From GitHub
@@ -95,19 +99,19 @@ Each skill folder (including `references/`) must be copied whole:
 ```bash
 # Claude Code (user-level)
 mkdir -p ~/.claude/skills
-cp -R fowler-refactoring myers-art-of-software-testing ~/.claude/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.claude/skills/
 
 # OpenCode (project-level; real copies, not symlinks)
 mkdir -p /your/project/.opencode/skill
-cp -R fowler-refactoring myers-art-of-software-testing /your/project/.opencode/skill/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review /your/project/.opencode/skill/
 
 # Codex (user-level)
 mkdir -p ~/.codex/skills
-cp -R fowler-refactoring myers-art-of-software-testing ~/.codex/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.codex/skills/
 
 # OpenClaw (user-level)
 mkdir -p ~/.openclaw/skills
-cp -R fowler-refactoring myers-art-of-software-testing ~/.openclaw/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.openclaw/skills/
 ```
 
 For Hermes Agent, copy the skill folders into its skills directory per its
@@ -120,6 +124,7 @@ npx skills list
 npx skills update -y
 npx skills remove fowler-refactoring
 npx skills remove myers-art-of-software-testing
+npx skills remove git-diff-review
 ```
 
 </details>
@@ -151,6 +156,14 @@ Two modules A→B: give me seam cases and failure-propagation threads.
 Review my existing test suite — what's missing?
 ```
 
+**🔍 git-diff-review**
+
+```text
+I just changed the auth middleware — show me the diff before I review it.
+
+Review this branch against main: findings at file:line, fixes as git diff blocks.
+```
+
 > 📋 Expected output style: **tables, not essays** — diagnosis tables, case tables,
 > stub maps, with explicit priorities and one-line coverage notes.
 
@@ -167,10 +180,12 @@ my-skills/
 │   └── references/
 │       ├── smell-map.md      # 24 smells → techniques (loaded on demand)
 │       └── techniques.md     # chapter digests + technique index
-└── myers-art-of-software-testing/
-    ├── SKILL.md
-    └── references/
-        └── examples.md       # worked examples + method cheatsheet
+├── myers-art-of-software-testing/
+│   ├── SKILL.md
+│   └── references/
+│       └── examples.md       # worked examples + method cheatsheet
+└── git-diff-review/
+    └── SKILL.md              # diff-based handoff & review protocol
 ```
 
 ## ➕ Adding a New Skill

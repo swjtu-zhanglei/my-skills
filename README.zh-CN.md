@@ -5,11 +5,11 @@
 [English](./README.md) | **简体中文**
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
-![Skills](https://img.shields.io/badge/skills-2-brightgreen.svg)
+![Skills](https://img.shields.io/badge/skills-3-brightgreen.svg)
 ![Agents](https://img.shields.io/badge/agents-Claude%20Code%20%7C%20OpenCode%20%7C%20Codex%20%7C%20Hermes%20%7C%20OpenClaw%20%2B50-orange.svg)
 
-📖 把软件工程经典书籍蒸馏成**可安装、可执行的操作型 Agent Skill** ——
-不是读书笔记，而是编码 agent 真正能执行的工作流。
+📖 把软件工程经典书籍与工程实践蒸馏成**可安装、可执行的操作型 Agent Skill** ——
+不是笔记，而是编码 agent 真正能执行的工作流。
 
 </div>
 
@@ -21,9 +21,10 @@
 |-------|---------|-----------|-------------|
 | 🔧 [**fowler-refactoring**](./fowler-refactoring/SKILL.md) | Fowler《重构》第 2 版 | 诊断坏味道（24 项映射表）→ 选择目录技法 → 两顶帽子规则下小步执行并逐步验证 | 「重构这段代码」「有什么坏味道」「不改行为地清理代码」 |
 | 🧪 [**myers-art-of-software-testing**](./myers-art-of-software-testing/SKILL.md) | Myers《软件测试的艺术》第 3 版 | 破坏性用例设计：黑盒 EP+BVA+因果图，再白盒补分支；单元与多模块接缝配方；固定用例表格 | 「设计测试用例」「给这个函数写测试」「评审我的用例」 |
+| 🔍 [**git-diff-review**](./git-diff-review/SKILL.md) | 工程实践（agent 交付与代码评审） | 把每处改动以真实 `git diff` 逐行展示：stat 概览、逐文件 hunk、按风险排序的评审要点、验证证据；禁止整文件 before/after 对比 | 「给我看 diff」「改了什么」「评审这个分支/提交/PR」 |
 
-每个 skill 文件夹包含 `SKILL.md`（YAML frontmatter + 操作指令）和按需加载的
-`references/` 目录——采用官方 skill 仓库
+每个 skill 文件夹包含 `SKILL.md`（YAML frontmatter + 操作指令）；大块表格放进可选的
+`references/` 目录按需加载——采用官方 skill 仓库
 （[anthropics/skills](https://github.com/anthropics/skills)）的**渐进式披露**结构。
 
 ## 🚀 快速开始
@@ -47,6 +48,7 @@ npx skills add <YOUR_USER>/my-skills --all -g -y
 | **Codex** | `npx skills add . --all -a codex -y` | `.agents/skills/` · `~/.codex/skills/` |
 | **Hermes Agent** | `npx skills add . --all -a '*' -y` | 自动检测——用 `npx skills list` 查看 |
 | **OpenClaw** | 手动复制（见下方折叠） | `<workspace>/skills/` · `~/.openclaw/skills/` |
+| **DSH**（DeepSeek Harness） | `npm run install:dsh` | `~/.agents/skills/`（共享根，`-a codex` 目标） |
 | Cursor / Copilot / Gemini CLI 等 50+ | `npx skills add . --all -a '*' -y` | 见 `npx skills list` |
 
 > 💡 安装后**重启 agent 会话**，新 skill 才会被发现。
@@ -76,6 +78,7 @@ npm run install:global    # 用户全局（-g）
 npm run install:claude    # 仅 Claude Code
 npm run install:opencode  # 仅 OpenCode
 npm run install:codex     # 仅 Codex
+npm run install:dsh       # 装到 ~/.agents/skills/（DSH、Codex、Cursor 等都读这里）
 ```
 
 ### 从 GitHub 安装
@@ -94,19 +97,19 @@ npx skills add https://github.com/YOUR_USER/my-skills --all -y
 ```bash
 # Claude Code（用户级）
 mkdir -p ~/.claude/skills
-cp -R fowler-refactoring myers-art-of-software-testing ~/.claude/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.claude/skills/
 
 # OpenCode（项目级；真实拷贝，不要用 symlink）
 mkdir -p /your/project/.opencode/skill
-cp -R fowler-refactoring myers-art-of-software-testing /your/project/.opencode/skill/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review /your/project/.opencode/skill/
 
 # Codex（用户级）
 mkdir -p ~/.codex/skills
-cp -R fowler-refactoring myers-art-of-software-testing ~/.codex/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.codex/skills/
 
 # OpenClaw（用户级）
 mkdir -p ~/.openclaw/skills
-cp -R fowler-refactoring myers-art-of-software-testing ~/.openclaw/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.openclaw/skills/
 ```
 
 Hermes Agent：按其文档把 skill 文件夹整体复制到对应 skills 目录，保持目录结构不变。
@@ -118,6 +121,7 @@ npx skills list
 npx skills update -y
 npx skills remove fowler-refactoring
 npx skills remove myers-art-of-software-testing
+npx skills remove git-diff-review
 ```
 
 </details>
@@ -149,6 +153,14 @@ skill 会**用你的语言回答**（中文、English 均可）。🌏
 评审我现有的测试用例，缺什么补什么。
 ```
 
+**🔍 git-diff-review**
+
+```text
+我刚改了认证中间件——先给我看 diff，我来审。
+
+对照 main 评审这个分支：问题给到 file:line，修复建议用 git diff 块。
+```
+
 > 📋 期望输出风格：**表格而非长文**——诊断表、用例表、Stub 映射表，
 > 带明确优先级和一行覆盖说明。
 
@@ -165,10 +177,12 @@ my-skills/
 │   └── references/
 │       ├── smell-map.md      # 24 坏味道 → 技法映射（按需加载）
 │       └── techniques.md     # 章节摘要 + 技法索引
-└── myers-art-of-software-testing/
-    ├── SKILL.md
-    └── references/
-        └── examples.md       # 示例 + 方法速查表
+├── myers-art-of-software-testing/
+│   ├── SKILL.md
+│   └── references/
+│       └── examples.md       # 示例 + 方法速查表
+└── git-diff-review/
+    └── SKILL.md              # 基于 diff 的交付与评审协议
 ```
 
 ## ➕ 新增一个 Skill
