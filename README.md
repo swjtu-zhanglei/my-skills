@@ -19,12 +19,12 @@ not summaries, but workflows your coding agent actually executes.
 
 | Skill | 📕 Source | ⚙️ What it does | 💬 Triggers on |
 |-------|-----------|-----------------|----------------|
-| 🔧 [**fowler-refactoring**](./fowler-refactoring/SKILL.md) | Fowler, *Refactoring* 2nd ed. | Diagnoses code smells (24-smell map), picks catalog techniques, executes in verified baby steps under the Two-Hats rule | "refactor this", "code smells?", "clean up without changing behavior" |
-| 🧪 [**myers-art-of-software-testing**](./myers-art-of-software-testing/SKILL.md) | Myers, *The Art of Software Testing* 3rd ed. | Designs destructive test cases: black-box EP + BVA + cause-effect, then white-box branch fill-in; unit and multi-module seam recipes; fixed case tables | "design test cases", "write tests for", "review my test suite" |
-| 🔍 [**git-diff-review**](./git-diff-review/SKILL.md) | Field practice (agent handoff & code review) | Shows every change as real line-by-line `git diff` — stat summary, per-file hunks, risk-ordered review points, verification evidence; no full-file before/after dumps | "show me the diff", "what changed?", "review this branch/commit/PR" |
-| 🎨 [**animated-diagram-style**](./animated-diagram-style/SKILL.md) | Field practice (visual style) | Applies pastel panels, clear typography, and restrained vector motion to architecture, flow, class, sequence, and state diagrams; delivers only HTML + SVG | "use this drawing style", "beautify a class diagram", "animated sequence diagram" |
+| 🔧 [**fowler-refactoring**](./skills/fowler-refactoring/SKILL.md) | Fowler, *Refactoring* 2nd ed. | Diagnoses code smells (24-smell map), picks catalog techniques, executes in verified baby steps under the Two-Hats rule | "refactor this", "code smells?", "clean up without changing behavior" |
+| 🧪 [**myers-art-of-software-testing**](./skills/myers-art-of-software-testing/SKILL.md) | Myers, *The Art of Software Testing* 3rd ed. | Designs destructive test cases: black-box EP + BVA + cause-effect, then white-box branch fill-in; unit and multi-module seam recipes; fixed case tables | "design test cases", "write tests for", "review my test suite" |
+| 🔍 [**git-diff-review**](./skills/git-diff-review/SKILL.md) | Field practice (agent handoff & code review) | Shows every change as real line-by-line `git diff` — stat summary, per-file hunks, risk-ordered review points, verification evidence; no full-file before/after dumps | "show me the diff", "what changed?", "review this branch/commit/PR" |
+| 🎨 [**animated-diagram-style**](./skills/animated-diagram-style/SKILL.md) | Field practice (visual style) | Applies pastel panels, clear typography, and restrained vector motion to architecture, flow, class, sequence, and state diagrams; delivers only HTML + SVG | "use this drawing style", "beautify a class diagram", "animated sequence diagram" |
 
-Each skill folder contains a `SKILL.md` (YAML frontmatter + operational
+Each skill under `skills/` contains a `SKILL.md` (YAML frontmatter + operational
 instructions); bulky tables move into an optional `references/` directory loaded
 on demand — following the
 [progressive-disclosure structure](https://github.com/anthropics/skills) used
@@ -33,12 +33,19 @@ by official skill repositories.
 ## 🚀 Quick Start
 
 ```bash
-# install all skills into the current project, for all detected agents
-npx skills add <YOUR_USER>/my-skills --all -y
+# interactive: choose skills and agents
+npx skills add swjtu-zhanglei/my-skills
 
-# or globally (all projects on this machine)
-npx skills add <YOUR_USER>/my-skills --all -g -y
+# all four skills, then choose agents
+npx skills add swjtu-zhanglei/my-skills --skill '*'
+
+# non-interactive global install for one agent
+npx -y skills add swjtu-zhanglei/my-skills --skill '*' -g -a claude-code
 ```
+
+> `--skill '*'` selects all skills. `--all` selects all skills **and all agents**;
+> `-y` skips every prompt. Universal agents (`.agents/skills`) are always included —
+> the agent picker only adds per-agent links.
 
 Powered by the [skills CLI](https://github.com/vercel-labs/skills) ([skills.sh](https://skills.sh/)). ⚡
 
@@ -46,13 +53,13 @@ Powered by the [skills CLI](https://github.com/vercel-labs/skills) ([skills.sh](
 
 | Agent | 📦 Install command | 📂 Skills directory (project / user) |
 |-------|--------------------|--------------------------------------|
-| **Claude Code** | `npx skills add . --all -a claude-code -y` | `.claude/skills/` · `~/.claude/skills/` |
-| **OpenCode** | `npx skills add . --all -a opencode -y` | `.opencode/skill/` · `~/.config/opencode/skill/` |
-| **Codex** | `npx skills add . --all -a codex -y` | `.agents/skills/` · `~/.codex/skills/` |
-| **Hermes Agent** | `npx skills add . --all -a '*' -y` | auto-detected — check with `npx skills list` |
+| **Claude Code** | `npx skills add swjtu-zhanglei/my-skills --skill '*' -a claude-code -y` | `.claude/skills/` · `~/.claude/skills/` |
+| **OpenCode** | `npx skills add swjtu-zhanglei/my-skills --skill '*' -a opencode -y` | `.opencode/skill/` · `~/.config/opencode/skill/` |
+| **Codex** | `npx skills add swjtu-zhanglei/my-skills --skill '*' -a codex -y` | `.agents/skills/` · `~/.codex/skills/` |
+| **Hermes Agent** | `npx skills add swjtu-zhanglei/my-skills --skill '*' -a hermes-agent -y` | auto-detected — check with `npx skills list` |
 | **OpenClaw** | manual copy (below) | `<workspace>/skills/` · `~/.openclaw/skills/` |
-| **DSH** (DeepSeek Harness) | `npm run install:dsh` | `~/.agents/skills/` (shared root; `-a codex` target) |
-| Cursor / Copilot / Gemini CLI / 50+ more | `npx skills add . --all -a '*' -y` | see `npx skills list` |
+| **DSH** (DeepSeek Harness) | `npx -y skills add swjtu-zhanglei/my-skills --skill '*' -g -a codex` | `~/.agents/skills/` (shared root; `-a codex` target) |
+| Cursor / Copilot / Gemini CLI / 50+ more | `npx skills add swjtu-zhanglei/my-skills --skill '*'` (then choose agents) | see `npx skills list` |
 
 > 💡 After installing, **restart the agent session** so new skills are discovered.
 
@@ -65,12 +72,12 @@ Powered by the [skills CLI](https://github.com/vercel-labs/skills) ([skills.sh](
 cd /path/to/my-skills
 
 npx skills add . -l                      # list available skills
-npx skills add . --all -y                # all skills → current project
-npx skills add . --all -g -y             # all skills → user global
+npx skills add . --skill '*'             # all skills, then choose agents
+npx skills add . --skill '*' -g          # all skills, global, choose agents
 npx skills add . --skill fowler-refactoring -y            # one skill
 npx skills add . --skill myers-art-of-software-testing -y
 npx skills add . --skill animated-diagram-style -y
-npx skills add . --all -a '*' -y         # every detected agent at once
+npx -y skills add . --skill '*' -a codex # all skills → Codex + universal
 ```
 
 Or use the npm shortcuts:
@@ -88,41 +95,43 @@ npm run install:dsh       # ~/.agents/skills/ (read by DSH, Codex, Cursor, ...)
 ### From GitHub
 
 ```bash
-npx skills add YOUR_USER/my-skills --all -y
-npx skills add YOUR_USER/my-skills --all -g -y
-npx skills add YOUR_USER/my-skills --skill fowler-refactoring -y
-npx skills add https://github.com/YOUR_USER/my-skills --all -y
+npx skills add swjtu-zhanglei/my-skills
+npx skills add swjtu-zhanglei/my-skills --skill '*'
+npx -y skills add swjtu-zhanglei/my-skills --skill '*' -g -a claude-code
+npx skills add swjtu-zhanglei/my-skills --skill fowler-refactoring -y
+npx skills add https://github.com/swjtu-zhanglei/my-skills --skill '*'
 ```
 
 ### Manual copy (no npx)
 
-Each skill folder (including `references/`) must be copied whole:
+Each skill folder under `skills/` (including `references/` and `assets/`) must be copied whole:
 
 ```bash
 # Claude Code (user-level)
 mkdir -p ~/.claude/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.claude/skills/
+cp -R skills/* ~/.claude/skills/
 
 # OpenCode (project-level; real copies, not symlinks)
 mkdir -p /your/project/.opencode/skill
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style /your/project/.opencode/skill/
+cp -R skills/* /your/project/.opencode/skill/
 
 # Codex (user-level)
 mkdir -p ~/.codex/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.codex/skills/
+cp -R skills/* ~/.codex/skills/
 
 # OpenClaw (user-level)
 mkdir -p ~/.openclaw/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.openclaw/skills/
+cp -R skills/* ~/.openclaw/skills/
 ```
 
-For Hermes Agent, copy the skill folders into its skills directory per its
-documentation, keeping the same folder layout.
+For Hermes Agent, copy the folders from `skills/` into its skills directory per
+its documentation, keeping the same folder layout.
 
 ### Update / uninstall
 
 ```bash
 npx skills list
+npx skills check
 npx skills update -y
 npx skills remove fowler-refactoring
 npx skills remove myers-art-of-software-testing
@@ -177,8 +186,8 @@ Apply the same style to a class diagram and an RPC sequence diagram; keep each d
 Deliver HTML and animated SVG only, with no JSON or raster previews.
 ```
 
-[HTML viewer template](./animated-diagram-style/assets/diagram-template.html) ·
-[Animated SVG template](./animated-diagram-style/assets/diagram-template.svg)
+[HTML viewer template](./skills/animated-diagram-style/assets/diagram-template.html) ·
+[Animated SVG template](./skills/animated-diagram-style/assets/diagram-template.svg)
 (download either file and open in a browser).
 
 > 📋 Refactoring and testing produce concise tables; review produces real diffs;
@@ -192,44 +201,55 @@ my-skills/
 ├── README.zh-CN.md           # 简体中文
 ├── LICENSE
 ├── package.json
-├── fowler-refactoring/
-│   ├── SKILL.md              # operational workflow (always loaded)
-│   └── references/
-│       ├── smell-map.md      # 24 smells → techniques (loaded on demand)
-│       └── techniques.md     # chapter digests + technique index
-├── myers-art-of-software-testing/
-│   ├── SKILL.md
-│   └── references/
-│       └── examples.md       # worked examples + method cheatsheet
-├── git-diff-review/
-│   └── SKILL.md              # diff-based handoff & review protocol
-└── animated-diagram-style/
-    ├── SKILL.md              # diagram style and two-file delivery
-    ├── agents/openai.yaml   # skill discovery metadata
-    ├── assets/
-    │   ├── diagram-template.html
-    │   └── diagram-template.svg
-    └── references/
-        ├── style-guide.md   # palette, hierarchy, logos, motion
-        └── verification.md  # playback, embedding, zoom checks
+└── skills/
+    ├── fowler-refactoring/
+    │   ├── SKILL.md          # operational workflow (always loaded)
+    │   └── references/
+    │       ├── smell-map.md  # 24 smells → techniques (loaded on demand)
+    │       └── techniques.md # chapter digests + technique index
+    ├── myers-art-of-software-testing/
+    │   ├── SKILL.md
+    │   └── references/
+    │       └── examples.md   # worked examples + method cheatsheet
+    ├── git-diff-review/
+    │   └── SKILL.md          # diff-based handoff & review protocol
+    └── animated-diagram-style/
+        ├── SKILL.md          # diagram style and two-file delivery
+        ├── agents/openai.yaml # skill discovery metadata
+        ├── assets/
+        │   ├── diagram-template.html
+        │   └── diagram-template.svg
+        └── references/
+            ├── style-guide.md # palette, hierarchy, logos, motion
+            └── verification.md # playback, embedding, zoom checks
 ```
 
 ## ➕ Adding a New Skill
 
-1. 📝 Create `<skill-name>/SKILL.md` with `name` + `description` frontmatter.
-   Write the description in third person with explicit trigger phrases
-   ("MUST use when the user asks to …").
+1. 📝 Create `skills/<skill-name>/SKILL.md` with `name` matching the folder,
+   plus `description` and `license: MIT` frontmatter. Write the description in
+   third person with explicit trigger phrases ("MUST use when the user asks to …").
 2. ✂️ Keep `SKILL.md` operational and lean (workflow, output format, anti-patterns,
-   done criteria); move bulky reference tables into `<skill-name>/references/*.md`.
+   done criteria); move bulky reference tables into `skills/<skill-name>/references/*.md`.
 3. ✅ Test locally: `npx skills add . -l`, install, restart the agent, trigger it.
-4. 📣 Add the skill to the table in both READMEs and to `files` in `package.json`.
+4. 📣 Add the skill to the table in both READMEs; `package.json` already ships
+   everything under `skills/**`.
 
 ## ❓ FAQ
 
 <details>
 <summary><b><code>npx skills add . -l</code> doesn't show my skill</b></summary>
 
-The folder needs a `SKILL.md` with `name` and `description` frontmatter.
+The skill must live at `skills/<skill-name>/SKILL.md`, with `name` and
+`description` frontmatter, and `name` must match `<skill-name>`.
+</details>
+
+<details>
+<summary><b><code>--all</code> vs <code>--skill '*'</code> vs <code>-y</code></b></summary>
+
+`--all` installs all skills to all agents; `--skill '*'` installs all skills but
+still lets you choose agents; `-y` skips every prompt and auto-selects detected
+agents. For a targeted install, use `--skill '*'` plus `-a <agent>`.
 </details>
 
 <details>

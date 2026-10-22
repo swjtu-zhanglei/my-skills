@@ -25,21 +25,18 @@
   ],
   "license": "MIT",
   "files": [
-    "fowler-refactoring/**",
-    "myers-art-of-software-testing/**",
-    "git-diff-review/**",
-    "animated-diagram-style/**",
+    "skills/**",
     "README.md",
     "README.zh-CN.md",
     "LICENSE"
   ],
   "scripts": {
     "list": "npx skills add . -l",
-    "install:local": "npx skills add . --all -y",
-    "install:global": "npx skills add . --all -g -y",
-    "install:opencode": "npx skills add . --all -a opencode -y",
-    "install:claude": "npx skills add . --all -a claude-code -y",
-    "install:codex": "npx skills add . --all -a codex -y",
-    "install:dsh": "npx skills add . --all -g -a codex -y"
+    "install:local": "npx skills add . --skill '*' -y",
+    "install:global": "npx skills add . --skill '*' -g -y",
+    "install:opencode": "npx skills add . --skill '*' -a opencode -y",
+    "install:claude": "npx skills add . --skill '*' -a claude-code -y",
+    "install:codex": "npx skills add . --skill '*' -a codex -y",
+    "install:dsh": "npx skills add . --skill '*' -g -a codex -y"
   }
 }

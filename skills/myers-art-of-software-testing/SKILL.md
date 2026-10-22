@@ -1,6 +1,7 @@
 ---
 name: myers-art-of-software-testing
 description: "Operational test-design skill from Myers' The Art of Software Testing (3rd). MUST use when the user asks to design test cases, write tests, or test a function/module/API/feature. Forces black-box (EP+BVA+cause-effect) then white-box branch fill-in; unit vs multi-module integration recipes; fixed case tables only—no essay test plans."
+license: MIT
 ---
 
 # Myers Test Design (operational)

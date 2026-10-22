@@ -19,24 +19,30 @@
 
 | Skill | 📕 出处 | ⚙️ 做什么 | 💬 触发场景 |
 |-------|---------|-----------|-------------|
-| 🔧 [**fowler-refactoring**](./fowler-refactoring/SKILL.md) | Fowler《重构》第 2 版 | 诊断坏味道（24 项映射表）→ 选择目录技法 → 两顶帽子规则下小步执行并逐步验证 | 「重构这段代码」「有什么坏味道」「不改行为地清理代码」 |
-| 🧪 [**myers-art-of-software-testing**](./myers-art-of-software-testing/SKILL.md) | Myers《软件测试的艺术》第 3 版 | 破坏性用例设计：黑盒 EP+BVA+因果图，再白盒补分支；单元与多模块接缝配方；固定用例表格 | 「设计测试用例」「给这个函数写测试」「评审我的用例」 |
-| 🔍 [**git-diff-review**](./git-diff-review/SKILL.md) | 工程实践（agent 交付与代码评审） | 把每处改动以真实 `git diff` 逐行展示：stat 概览、逐文件 hunk、按风险排序的评审要点、验证证据；禁止整文件 before/after 对比 | 「给我看 diff」「改了什么」「评审这个分支/提交/PR」 |
-| 🎨 [**animated-diagram-style**](./animated-diagram-style/SKILL.md) | 工程实践（绘图风格） | 将浅色分区、清晰字体和克制的矢量动画应用到架构图、流程图、类图、时序图及状态图；只交付 HTML + SVG | 「采用这种画图风格」「美化类图」「动态时序图」 |
+| 🔧 [**fowler-refactoring**](./skills/fowler-refactoring/SKILL.md) | Fowler《重构》第 2 版 | 诊断坏味道（24 项映射表）→ 选择目录技法 → 两顶帽子规则下小步执行并逐步验证 | 「重构这段代码」「有什么坏味道」「不改行为地清理代码」 |
+| 🧪 [**myers-art-of-software-testing**](./skills/myers-art-of-software-testing/SKILL.md) | Myers《软件测试的艺术》第 3 版 | 破坏性用例设计：黑盒 EP+BVA+因果图，再白盒补分支；单元与多模块接缝配方；固定用例表格 | 「设计测试用例」「给这个函数写测试」「评审我的用例」 |
+| 🔍 [**git-diff-review**](./skills/git-diff-review/SKILL.md) | 工程实践（agent 交付与代码评审） | 把每处改动以真实 `git diff` 逐行展示：stat 概览、逐文件 hunk、按风险排序的评审要点、验证证据；禁止整文件 before/after 对比 | 「给我看 diff」「改了什么」「评审这个分支/提交/PR」 |
+| 🎨 [**animated-diagram-style**](./skills/animated-diagram-style/SKILL.md) | 工程实践（绘图风格） | 将浅色分区、清晰字体和克制的矢量动画应用到架构图、流程图、类图、时序图及状态图；只交付 HTML + SVG | 「采用这种画图风格」「美化类图」「动态时序图」 |
 
-每个 skill 文件夹包含 `SKILL.md`（YAML frontmatter + 操作指令）；大块表格放进可选的
+`skills/` 下的每个 skill 文件夹包含 `SKILL.md`（YAML frontmatter + 操作指令）；大块表格放进可选的
 `references/` 目录按需加载——采用官方 skill 仓库
 （[anthropics/skills](https://github.com/anthropics/skills)）的**渐进式披露**结构。
 
 ## 🚀 快速开始
 
 ```bash
-# 安装全部 skill 到当前项目（所有已检测到的 agent）
-npx skills add <YOUR_USER>/my-skills --all -y
+# 交互式：先选 skill，再选 agent
+npx skills add swjtu-zhanglei/my-skills
 
-# 或全局安装（本机所有项目可用）
-npx skills add <YOUR_USER>/my-skills --all -g -y
+# 装全部 4 个 skill，再选 agent
+npx skills add swjtu-zhanglei/my-skills --skill '*'
+
+# 非交互：全局安装，只装 Claude Code
+npx -y skills add swjtu-zhanglei/my-skills --skill '*' -g -a claude-code
 ```
+
+> `--skill '*'` 表示全部 skill；`--all` 表示全部 skill **和全部 agent**；
+> `-y` 跳过所有交互。Universal agent（`.agents/skills`）始终包含，agent 选择页只额外添加各 agent 的链接。
 
 基于 [skills CLI](https://github.com/vercel-labs/skills)（[skills.sh](https://skills.sh/)）。⚡
 
@@ -44,13 +50,13 @@ npx skills add <YOUR_USER>/my-skills --all -g -y
 
 | Agent | 📦 安装命令 | 📂 Skill 目录（项目级 / 用户级） |
 |-------|-------------|----------------------------------|
-| **Claude Code** | `npx skills add . --all -a claude-code -y` | `.claude/skills/` · `~/.claude/skills/` |
-| **OpenCode** | `npx skills add . --all -a opencode -y` | `.opencode/skill/` · `~/.config/opencode/skill/` |
-| **Codex** | `npx skills add . --all -a codex -y` | `.agents/skills/` · `~/.codex/skills/` |
-| **Hermes Agent** | `npx skills add . --all -a '*' -y` | 自动检测——用 `npx skills list` 查看 |
+| **Claude Code** | `npx skills add swjtu-zhanglei/my-skills --skill '*' -a claude-code -y` | `.claude/skills/` · `~/.claude/skills/` |
+| **OpenCode** | `npx skills add swjtu-zhanglei/my-skills --skill '*' -a opencode -y` | `.opencode/skill/` · `~/.config/opencode/skill/` |
+| **Codex** | `npx skills add swjtu-zhanglei/my-skills --skill '*' -a codex -y` | `.agents/skills/` · `~/.codex/skills/` |
+| **Hermes Agent** | `npx skills add swjtu-zhanglei/my-skills --skill '*' -a hermes-agent -y` | 自动检测——用 `npx skills list` 查看 |
 | **OpenClaw** | 手动复制（见下方折叠） | `<workspace>/skills/` · `~/.openclaw/skills/` |
-| **DSH**（DeepSeek Harness） | `npm run install:dsh` | `~/.agents/skills/`（共享根，`-a codex` 目标） |
-| Cursor / Copilot / Gemini CLI 等 50+ | `npx skills add . --all -a '*' -y` | 见 `npx skills list` |
+| **DSH**（DeepSeek Harness） | `npx -y skills add swjtu-zhanglei/my-skills --skill '*' -g -a codex` | `~/.agents/skills/`（共享根，`-a codex` 目标） |
+| Cursor / Copilot / Gemini CLI 等 50+ | `npx skills add swjtu-zhanglei/my-skills --skill '*'`（再选 agent） | 见 `npx skills list` |
 
 > 💡 安装后**重启 agent 会话**，新 skill 才会被发现。
 
@@ -63,12 +69,12 @@ npx skills add <YOUR_USER>/my-skills --all -g -y
 cd /path/to/my-skills
 
 npx skills add . -l                      # 列出可用 skill
-npx skills add . --all -y                # 全部 → 当前项目
-npx skills add . --all -g -y             # 全部 → 用户全局
+npx skills add . --skill '*'             # 全部 skill，再选 agent
+npx skills add . --skill '*' -g          # 全部 skill，全局，再选 agent
 npx skills add . --skill fowler-refactoring -y            # 单个
 npx skills add . --skill myers-art-of-software-testing -y
 npx skills add . --skill animated-diagram-style -y
-npx skills add . --all -a '*' -y         # 一次装到所有已识别的 agent
+npx -y skills add . --skill '*' -a codex # 全部 skill → Codex + universal
 ```
 
 或使用 npm 快捷脚本：
@@ -86,40 +92,42 @@ npm run install:dsh       # 装到 ~/.agents/skills/（DSH、Codex、Cursor 等�
 ### 从 GitHub 安装
 
 ```bash
-npx skills add YOUR_USER/my-skills --all -y
-npx skills add YOUR_USER/my-skills --all -g -y
-npx skills add YOUR_USER/my-skills --skill fowler-refactoring -y
-npx skills add https://github.com/YOUR_USER/my-skills --all -y
+npx skills add swjtu-zhanglei/my-skills
+npx skills add swjtu-zhanglei/my-skills --skill '*'
+npx -y skills add swjtu-zhanglei/my-skills --skill '*' -g -a claude-code
+npx skills add swjtu-zhanglei/my-skills --skill fowler-refactoring -y
+npx skills add https://github.com/swjtu-zhanglei/my-skills --skill '*'
 ```
 
 ### 手动复制（不依赖 npx）
 
-每个 skill 文件夹（含 `references/`）必须整体复制：
+`skills/` 下的每个 skill 文件夹（含 `references/`、`assets/`）必须整体复制：
 
 ```bash
 # Claude Code（用户级）
 mkdir -p ~/.claude/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.claude/skills/
+cp -R skills/* ~/.claude/skills/
 
 # OpenCode（项目级；真实拷贝，不要用 symlink）
 mkdir -p /your/project/.opencode/skill
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style /your/project/.opencode/skill/
+cp -R skills/* /your/project/.opencode/skill/
 
 # Codex（用户级）
 mkdir -p ~/.codex/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.codex/skills/
+cp -R skills/* ~/.codex/skills/
 
 # OpenClaw（用户级）
 mkdir -p ~/.openclaw/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.openclaw/skills/
+cp -R skills/* ~/.openclaw/skills/
 ```
 
-Hermes Agent：按其文档把 skill 文件夹整体复制到对应 skills 目录，保持目录结构不变。
+Hermes Agent：按其文档把 `skills/` 下的文件夹整体复制到对应 skills 目录，保持目录结构不变。
 
 ### 更新 / 卸载
 
 ```bash
 npx skills list
+npx skills check
 npx skills update -y
 npx skills remove fowler-refactoring
 npx skills remove myers-art-of-software-testing
@@ -174,8 +182,8 @@ skill 会**用你的语言回答**（中文、English 均可）。🌏
 只交付 HTML 和动态 SVG，不生成 JSON 或位图预览。
 ```
 
-[HTML 查看器模板](./animated-diagram-style/assets/diagram-template.html) ·
-[动态 SVG 模板](./animated-diagram-style/assets/diagram-template.svg)
+[HTML 查看器模板](./skills/animated-diagram-style/assets/diagram-template.html) ·
+[动态 SVG 模板](./skills/animated-diagram-style/assets/diagram-template.svg)
 （任一文件下载后均可独立用浏览器打开）。
 
 > 📋 重构与测试输出简明表格，代码评审输出真实 diff；
@@ -189,43 +197,53 @@ my-skills/
 ├── README.zh-CN.md           # 简体中文（本文件）
 ├── LICENSE
 ├── package.json
-├── fowler-refactoring/
-│   ├── SKILL.md              # 操作型工作流（始终加载）
-│   └── references/
-│       ├── smell-map.md      # 24 坏味道 → 技法映射（按需加载）
-│       └── techniques.md     # 章节摘要 + 技法索引
-├── myers-art-of-software-testing/
-│   ├── SKILL.md
-│   └── references/
-│       └── examples.md       # 示例 + 方法速查表
-├── git-diff-review/
-│   └── SKILL.md              # 基于 diff 的交付与评审协议
-└── animated-diagram-style/
-    ├── SKILL.md              # 通用绘图风格与双文件交付
-    ├── agents/openai.yaml   # skill 展示与发现信息
-    ├── assets/
-    │   ├── diagram-template.html
-    │   └── diagram-template.svg
-    └── references/
-        ├── style-guide.md   # 配色、层次、标志与动画
-        └── verification.md  # 播放、嵌入与缩放检查
+└── skills/
+    ├── fowler-refactoring/
+    │   ├── SKILL.md          # 操作型工作流（始终加载）
+    │   └── references/
+    │       ├── smell-map.md  # 24 坏味道 → 技法映射（按需加载）
+    │       └── techniques.md # 章节摘要 + 技法索引
+    ├── myers-art-of-software-testing/
+    │   ├── SKILL.md
+    │   └── references/
+    │       └── examples.md   # 示例 + 方法速查表
+    ├── git-diff-review/
+    │   └── SKILL.md          # 基于 diff 的交付与评审协议
+    └── animated-diagram-style/
+        ├── SKILL.md          # 通用绘图风格与双文件交付
+        ├── agents/openai.yaml # skill 展示与发现信息
+        ├── assets/
+        │   ├── diagram-template.html
+        │   └── diagram-template.svg
+        └── references/
+            ├── style-guide.md # 配色、层次、标志与动画
+            └── verification.md # 播放、嵌入与缩放检查
 ```
 
 ## ➕ 新增一个 Skill
 
-1. 📝 创建 `<skill-name>/SKILL.md`，frontmatter 含 `name` + `description`。
-   description 用第三人称写，带明确触发词（"MUST use when the user asks to …"）。
+1. 📝 创建 `skills/<skill-name>/SKILL.md`，`name` 与文件夹同名，frontmatter 含
+   `description`、`license: MIT`。description 用第三人称写，带明确触发词
+   （"MUST use when the user asks to …"）。
 2. ✂️ `SKILL.md` 保持操作型且精简（工作流、输出格式、反模式、完成标准）；
-   大块参考表格移到 `<skill-name>/references/*.md`。
+   大块参考表格移到 `skills/<skill-name>/references/*.md`。
 3. ✅ 本地验证：`npx skills add . -l` → 安装 → 重启 agent → 触发测试。
-4. 📣 把新 skill 加进两份 README 的目录表和 `package.json` 的 `files`。
+4. 📣 把新 skill 加进两份 README 的目录表；`package.json` 的 `skills/**` 会自动包含。
 
 ## ❓ 常见问题
 
 <details>
 <summary><b><code>npx skills add . -l</code> 看不到 skill？</b></summary>
 
-确认目录下有 `SKILL.md`，且含 `name`、`description` frontmatter。
+确认 skill 位于 `skills/<skill-name>/SKILL.md`，含 `name`、`description` frontmatter，
+且 `name` 与 `<skill-name>` 一致。
+</details>
+
+<details>
+<summary><b><code>--all</code> / <code>--skill '*'</code> / <code>-y</code> 有什么区别？</b></summary>
+
+`--all` 装全部 skill 到全部 agent；`--skill '*'` 装全部 skill，但仍可选择 agent；
+`-y` 跳过所有交互并自动选择已检测到的 agent。定向安装用 `--skill '*'` 加 `-a <agent>`。
 </details>
 
 <details>

@@ -1,6 +1,7 @@
 ---
 name: fowler-refactoring
 description: "Operational refactoring skill from Fowler's Refactoring, 2nd Edition. MUST use when the user asks to refactor code, clean up code, identify code smells, reduce technical debt, or improve design without changing behavior. Diagnoses smells, maps them to catalog techniques, and enforces the baby-steps safety protocol."
+license: MIT
 ---
 
 # Fowler Refactoring (operational)
