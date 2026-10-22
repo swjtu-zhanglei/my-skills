@@ -5,7 +5,7 @@
 **English** | [简体中文](./README.zh-CN.md)
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
-![Skills](https://img.shields.io/badge/skills-3-brightgreen.svg)
+![Skills](https://img.shields.io/badge/skills-4-brightgreen.svg)
 ![Agents](https://img.shields.io/badge/agents-Claude%20Code%20%7C%20OpenCode%20%7C%20Codex%20%7C%20Hermes%20%7C%20OpenClaw%20%2B50-orange.svg)
 
 📖 Classic software engineering books and field practice, distilled into **operational, installable agent skills** —
@@ -22,6 +22,7 @@ not summaries, but workflows your coding agent actually executes.
 | 🔧 [**fowler-refactoring**](./fowler-refactoring/SKILL.md) | Fowler, *Refactoring* 2nd ed. | Diagnoses code smells (24-smell map), picks catalog techniques, executes in verified baby steps under the Two-Hats rule | "refactor this", "code smells?", "clean up without changing behavior" |
 | 🧪 [**myers-art-of-software-testing**](./myers-art-of-software-testing/SKILL.md) | Myers, *The Art of Software Testing* 3rd ed. | Designs destructive test cases: black-box EP + BVA + cause-effect, then white-box branch fill-in; unit and multi-module seam recipes; fixed case tables | "design test cases", "write tests for", "review my test suite" |
 | 🔍 [**git-diff-review**](./git-diff-review/SKILL.md) | Field practice (agent handoff & code review) | Shows every change as real line-by-line `git diff` — stat summary, per-file hunks, risk-ordered review points, verification evidence; no full-file before/after dumps | "show me the diff", "what changed?", "review this branch/commit/PR" |
+| 🎨 [**animated-diagram-style**](./animated-diagram-style/SKILL.md) | Field practice (visual style) | Applies pastel panels, clear typography, and restrained vector motion to architecture, flow, class, sequence, and state diagrams; delivers only HTML + SVG | "use this drawing style", "beautify a class diagram", "animated sequence diagram" |
 
 Each skill folder contains a `SKILL.md` (YAML frontmatter + operational
 instructions); bulky tables move into an optional `references/` directory loaded
@@ -68,6 +69,7 @@ npx skills add . --all -y                # all skills → current project
 npx skills add . --all -g -y             # all skills → user global
 npx skills add . --skill fowler-refactoring -y            # one skill
 npx skills add . --skill myers-art-of-software-testing -y
+npx skills add . --skill animated-diagram-style -y
 npx skills add . --all -a '*' -y         # every detected agent at once
 ```
 
@@ -99,19 +101,19 @@ Each skill folder (including `references/`) must be copied whole:
 ```bash
 # Claude Code (user-level)
 mkdir -p ~/.claude/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.claude/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.claude/skills/
 
 # OpenCode (project-level; real copies, not symlinks)
 mkdir -p /your/project/.opencode/skill
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review /your/project/.opencode/skill/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style /your/project/.opencode/skill/
 
 # Codex (user-level)
 mkdir -p ~/.codex/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.codex/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.codex/skills/
 
 # OpenClaw (user-level)
 mkdir -p ~/.openclaw/skills
-cp -R fowler-refactoring myers-art-of-software-testing git-diff-review ~/.openclaw/skills/
+cp -R fowler-refactoring myers-art-of-software-testing git-diff-review animated-diagram-style ~/.openclaw/skills/
 ```
 
 For Hermes Agent, copy the skill folders into its skills directory per its
@@ -125,6 +127,7 @@ npx skills update -y
 npx skills remove fowler-refactoring
 npx skills remove myers-art-of-software-testing
 npx skills remove git-diff-review
+npx skills remove animated-diagram-style
 ```
 
 </details>
@@ -164,8 +167,22 @@ I just changed the auth middleware — show me the diff before I review it.
 Review this branch against main: findings at file:line, fixes as git diff blocks.
 ```
 
-> 📋 Expected output style: **tables, not essays** — diagnosis tables, case tables,
-> stub maps, with explicit priorities and one-line coverage notes.
+**🎨 animated-diagram-style**
+
+```text
+Use $animated-diagram-style to draw the approval flow in this pastel technical style.
+
+Apply the same style to a class diagram and an RPC sequence diagram; keep each diagram’s notation.
+
+Deliver HTML and animated SVG only, with no JSON or raster previews.
+```
+
+[HTML viewer template](./animated-diagram-style/assets/diagram-template.html) ·
+[Animated SVG template](./animated-diagram-style/assets/diagram-template.svg)
+(download either file and open in a browser).
+
+> 📋 Refactoring and testing produce concise tables; review produces real diffs;
+> the diagram skill delivers an HTML viewer and an animated SVG; verification files stay outside the repository.
 
 ## 📁 Repository Structure
 
@@ -184,8 +201,17 @@ my-skills/
 │   ├── SKILL.md
 │   └── references/
 │       └── examples.md       # worked examples + method cheatsheet
-└── git-diff-review/
-    └── SKILL.md              # diff-based handoff & review protocol
+├── git-diff-review/
+│   └── SKILL.md              # diff-based handoff & review protocol
+└── animated-diagram-style/
+    ├── SKILL.md              # diagram style and two-file delivery
+    ├── agents/openai.yaml   # skill discovery metadata
+    ├── assets/
+    │   ├── diagram-template.html
+    │   └── diagram-template.svg
+    └── references/
+        ├── style-guide.md   # palette, hierarchy, logos, motion
+        └── verification.md  # playback, embedding, zoom checks
 ```
 
 ## ➕ Adding a New Skill

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" lang="zh-CN" aria-labelledby="title description" data-motion="on">
+  <title id="title">申请处理 · 流程图风格示例</title>
+  <desc id="description">从开始、提交资料到完整性判断。资料完整则处理申请并结束，否则补充资料后重新提交。动画沿资料完整的路径演示阅读顺序，16 秒循环不代表实际耗时。减少动态效果或打印时显示完整静态图。</desc>
+  <style>
+    svg { background: #f7f9fc; font-family: Inter, 'Noto Sans CJK SC', 'Microsoft YaHei', system-ui, sans-serif; }
+    text { fill: #172b43; }
+    .title { font-size: 27px; font-weight: 750; }
+    .eyebrow { font-size: 11px; letter-spacing: 2px; fill: #62758a; font-weight: 700; }
+    .note { font-size: 13px; fill: #62758a; }
+    .section { font-size: 13px; fill: #315d9c; font-weight: 700; }
+    .label { font-size: 17px; font-weight: 700; text-anchor: middle; }
+    .sub { font-size: 12px; fill: #62758a; text-anchor: middle; }
+    .edge-label { font-size: 13px; fill: #62758a; paint-order: stroke; stroke: #f7f9fc; stroke-width: 5; stroke-linejoin: round; text-anchor: middle; }
+    .route { fill: none; stroke: #7997c6; stroke-width: 2; }
+    .green { stroke: #149d83; }
+    .flow { fill: none; stroke: #2563eb; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 0.1 47.9; animation: travel 2s linear infinite; }
+    .phase { opacity: 0; animation: input-phase 16s linear infinite; }
+    .phase-2 { animation-name: decision-phase; }
+    .phase-3 { animation-name: process-phase; }
+    .phase-4 { animation-name: done-phase; }
+    .phase-3 .flow { stroke: #087f68; }
+    .chip { font-size: 13px; font-weight: 600; text-anchor: middle; fill: #62758a; }
+    @keyframes travel { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -96; } }
+    @keyframes input-phase { 0%, 23% { opacity: 1; } 25%, 100% { opacity: 0; } }
+    @keyframes decision-phase { 0%, 23%, 50%, 100% { opacity: 0; } 25%, 48% { opacity: 1; } }
+    @keyframes process-phase { 0%, 48%, 75%, 100% { opacity: 0; } 50%, 73% { opacity: 1; } }
+    @keyframes done-phase { 0%, 73%, 100% { opacity: 0; } 75%, 98% { opacity: 1; } }
+    svg[data-motion="off"] .motion { display: none; }
+    @media (prefers-reduced-motion: reduce) { .motion { display: none; } .phase, .flow { animation: none; } }
+    @media print { .motion { display: none; } .phase, .flow { animation: none; } }
+  </style>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><path d="M0 0 L10 4 L0 8Z" fill="#7997c6"/></marker>
+    <marker id="arrow-green" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><path d="M0 0 L10 4 L0 8Z" fill="#149d83"/></marker>
+    <path id="route-start" d="M180 288 H240"/>
+    <path id="route-submit" d="M420 288 H520"/>
+    <path id="route-yes" d="M660 288 H780"/>
+    <path id="route-done" d="M960 288 H1030"/>
+    <path id="route-no" d="M590 348 V420"/>
+    <path id="route-retry" d="M490 456 H344 Q330 456 330 442 V324"/>
+    <rect id="end-shape" x="1030" y="260" width="100" height="56" rx="28"/>
+  </defs>
+  <rect width="1200" height="620" fill="#f7f9fc"/>
+  <rect x="40" y="30" width="5" height="64" rx="2.5" fill="#2563eb"/>
+  <text x="60" y="42" class="eyebrow">DIAGRAM STYLE / FLOWCHART EXAMPLE</text>
+  <text x="60" y="78" class="title">申请处理：提交、判断与补充</text>
+  <text x="60" y="110" class="note">相同的配色与线条风格，可应用到架构图、流程图、类图与时序图。</text>
+  <rect x="48" y="146" width="1104" height="230" rx="16" fill="#eef4fd" stroke="#c6d6f0"/>
+  <text x="68" y="176" class="section">主流程 · 沿箭头从左向右阅读</text>
+  <rect x="754" y="210" width="384" height="138" rx="14" fill="#eef8f5" stroke="#b8ddcf"/>
+  <g marker-end="url(#arrow-blue)">
+    <use href="#route-start" class="route"/><use href="#route-submit" class="route"/>
+    <use href="#route-yes" class="route"/><use href="#route-no" class="route"/>
+    <use href="#route-retry" class="route"/>
+  </g>
+  <use href="#route-done" class="route green" marker-end="url(#arrow-green)"/>
+  <g class="motion" aria-hidden="true">
+    <g class="phase"><use href="#route-start" class="flow"/><use href="#route-submit" class="flow"/></g>
+    <g class="phase phase-2"><use href="#route-yes" class="flow"/></g>
+    <g class="phase phase-3"><use href="#route-done" class="flow"/></g>
+  </g>
+  <g id="nodes">
+    <rect x="80" y="260" width="100" height="56" rx="28" fill="#fff" stroke="#b4cbed"/>
+    <text x="130" y="294" class="label">开始</text>
+    <rect x="240" y="252" width="180" height="72" rx="11" fill="#fff" stroke="#b4cbed"/>
+    <text x="330" y="283" class="label">提交资料</text><text x="330" y="307" class="sub">填写并提交申请</text>
+    <path d="M590 228 L660 288 L590 348 L520 288Z" fill="#fff9ea" stroke="#e5cd8e"/>
+    <text x="590" y="284" class="label">资料</text><text x="590" y="307" class="label">完整？</text>
+    <rect x="780" y="252" width="180" height="72" rx="11" fill="#fff" stroke="#b2dacc"/>
+    <text x="870" y="283" class="label">处理申请</text><text x="870" y="307" class="sub">按业务规则办理</text>
+    <use href="#end-shape" fill="#e8f6f0" stroke="#8bc6af"/>
+    <text x="1080" y="294" class="label">结束</text>
+    <rect x="490" y="420" width="200" height="72" rx="11" fill="#f9f6ff" stroke="#c8b7e8"/>
+    <text x="590" y="451" class="label">补充资料</text><text x="590" y="475" class="sub">按提示完善后重新提交</text>
+  </g>
+  <g id="edge-labels">
+    <text x="718" y="277" class="edge-label">是</text>
+    <text x="610" y="392" class="edge-label">否</text>
+    <text x="414" y="445" class="edge-label">重新提交</text>
+    <text x="60" y="532" class="note">动画演示「资料完整」路径；补充与重提分支始终可见。图中时间仅用于示意。</text>
+  </g>
+  <g id="phase-chips">
+    <rect x="48" y="558" width="258" height="34" rx="8" fill="#edf1f6"/><text x="177" y="580" class="chip">01 提交资料</text>
+    <rect x="330" y="558" width="258" height="34" rx="8" fill="#edf1f6"/><text x="459" y="580" class="chip">02 判断完整性</text>
+    <rect x="612" y="558" width="258" height="34" rx="8" fill="#edf1f6"/><text x="741" y="580" class="chip">03 处理申请</text>
+    <rect x="894" y="558" width="258" height="34" rx="8" fill="#edf1f6"/><text x="1023" y="580" class="chip">04 结束</text>
+  </g>
+  <g class="motion" aria-hidden="true">
+    <g class="phase"><rect x="48" y="558" width="258" height="34" rx="8" fill="#e4edfd"/><text x="177" y="580" class="chip" style="fill:#2563eb">01 提交资料</text></g>
+    <g class="phase phase-2"><rect x="330" y="558" width="258" height="34" rx="8" fill="#e4edfd"/><text x="459" y="580" class="chip" style="fill:#2563eb">02 判断完整性</text></g>
+    <g class="phase phase-3"><rect x="612" y="558" width="258" height="34" rx="8" fill="#dff2eb"/><text x="741" y="580" class="chip" style="fill:#087f68">03 处理申请</text></g>
+    <g class="phase phase-4"><rect x="894" y="558" width="258" height="34" rx="8" fill="#dff2eb"/><text x="1023" y="580" class="chip" style="fill:#087f68">04 结束</text><use href="#end-shape" fill="none" stroke="#149d83" stroke-width="2.5"/></g>
+  </g>
+</svg>

@@ -2,7 +2,7 @@
   "name": "my-skills",
   "version": "1.2.0",
   "private": true,
-  "description": "Operational agent skills distilled from classic software engineering books: Fowler Refactoring + Myers Art of Software Testing + Git Diff Review. Install via npx skills for Claude Code, OpenCode, Codex, Hermes Agent, OpenClaw, and 50+ agents. Bilingual docs (EN/zh-CN).",
+  "description": "Operational agent skills from software engineering books and field practice: refactoring, test design, git diff review, and consistent diagram styling with HTML and animated SVG. Install via npx skills. Bilingual docs (EN/zh-CN).",
   "keywords": [
     "agent-skills",
     "skills.sh",
@@ -16,13 +16,19 @@
     "software-testing",
     "test-design",
     "code-review",
-    "git-diff"
+    "git-diff",
+    "architecture-diagrams",
+    "animated-svg",
+    "flowcharts",
+    "class-diagrams",
+    "sequence-diagrams"
   ],
   "license": "MIT",
   "files": [
     "fowler-refactoring/**",
     "myers-art-of-software-testing/**",
     "git-diff-review/**",
+    "animated-diagram-style/**",
     "README.md",
     "README.zh-CN.md",
     "LICENSE"

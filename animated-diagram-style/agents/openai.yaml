@@ -1,0 +1,4 @@
+interface:
+  display_name: "Animated Diagram Style"
+  short_description: "Pastel diagrams in HTML and animated SVG"
+  default_prompt: "Use $animated-diagram-style to draw this architecture, flow, class, or sequence diagram with a consistent pastel style and deliver HTML plus animated SVG."
