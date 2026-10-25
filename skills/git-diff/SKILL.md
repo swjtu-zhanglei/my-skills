@@ -1,10 +1,10 @@
 ---
-name: git-diff-review
+name: git-diff
 description: "Show every code change as a line-by-line git diff. MUST use when you have edited code and are reporting back, when the user asks what changed or to see the diff, and when reviewing a branch/commit/PR. Output is real `git diff` output — never full-file before/after dumps or prose summaries."
 license: MIT
 ---
 
-# Git Diff Review
+# Git Diff
 
 Show the change itself, line by line. Always respond in the user's language.
 

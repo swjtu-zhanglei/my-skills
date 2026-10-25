@@ -19,10 +19,10 @@
 
 | Skill | 📕 出处 | ⚙️ 做什么 | 💬 触发场景 |
 |-------|---------|-----------|-------------|
-| 🔧 [**fowler-refactoring**](./skills/fowler-refactoring/SKILL.md) | Fowler《重构》第 2 版 | 诊断坏味道（24 项映射表）→ 选择目录技法 → 两顶帽子规则下小步执行并逐步验证 | 「重构这段代码」「有什么坏味道」「不改行为地清理代码」 |
-| 🧪 [**myers-art-of-software-testing**](./skills/myers-art-of-software-testing/SKILL.md) | Myers《软件测试的艺术》第 3 版 | 破坏性用例设计：黑盒 EP+BVA+因果图，再白盒补分支；单元与多模块接缝配方；固定用例表格 | 「设计测试用例」「给这个函数写测试」「评审我的用例」 |
-| 🔍 [**git-diff-review**](./skills/git-diff-review/SKILL.md) | 工程实践（agent 交付与代码评审） | 把每处改动以真实 `git diff` 逐行展示：stat 概览、逐文件 hunk、按风险排序的评审要点、验证证据；禁止整文件 before/after 对比 | 「给我看 diff」「改了什么」「评审这个分支/提交/PR」 |
-| 🎨 [**animated-diagram-style**](./skills/animated-diagram-style/SKILL.md) | 工程实践（绘图风格） | 将浅色分区、清晰字体和克制的矢量动画应用到架构图、流程图、类图、时序图及状态图；只交付 HTML + SVG | 「采用这种画图风格」「美化类图」「动态时序图」 |
+| 🔧 [**fowler-refactor**](./skills/fowler-refactor/SKILL.md) | Fowler《重构》第 2 版 | 诊断坏味道（24 项映射表）→ 选择目录技法 → 两顶帽子规则下小步执行并逐步验证 | 「重构这段代码」「有什么坏味道」「不改行为地清理代码」 |
+| 🧪 [**myers-test-design**](./skills/myers-test-design/SKILL.md) | Myers《软件测试的艺术》第 3 版 | 破坏性用例设计：黑盒 EP+BVA+因果图，再白盒补分支；单元与多模块接缝配方；固定用例表格 | 「设计测试用例」「给这个函数写测试」「评审我的用例」 |
+| 🔍 [**git-diff**](./skills/git-diff/SKILL.md) | 工程实践（agent 交付与代码评审） | 把每处改动以真实 `git diff` 逐行展示：stat 概览、逐文件 hunk、按风险排序的评审要点、验证证据；禁止整文件 before/after 对比 | 「给我看 diff」「改了什么」「评审这个分支/提交/PR」 |
+| 🎨 [**diagram-style**](./skills/diagram-style/SKILL.md) | 工程实践（绘图风格） | 将浅色分区、清晰字体和克制的矢量动画应用到架构图、流程图、类图、时序图及状态图；只交付 HTML + SVG | 「采用这种画图风格」「美化类图」「动态时序图」 |
 
 `skills/` 下的每个 skill 文件夹包含 `SKILL.md`（YAML frontmatter + 操作指令）；大块表格放进可选的
 `references/` 目录按需加载——采用官方 skill 仓库
@@ -71,9 +71,9 @@ cd /path/to/my-skills
 npx skills add . -l                      # 列出可用 skill
 npx skills add . --skill '*'             # 全部 skill，再选 agent
 npx skills add . --skill '*' -g          # 全部 skill，全局，再选 agent
-npx skills add . --skill fowler-refactoring -y            # 单个
-npx skills add . --skill myers-art-of-software-testing -y
-npx skills add . --skill animated-diagram-style -y
+npx skills add . --skill fowler-refactor -y            # 单个
+npx skills add . --skill myers-test-design -y
+npx skills add . --skill diagram-style -y
 npx -y skills add . --skill '*' -a codex # 全部 skill → Codex + universal
 ```
 
@@ -95,7 +95,7 @@ npm run install:dsh       # 装到 ~/.agents/skills/（DSH、Codex、Cursor 等�
 npx skills add swjtu-zhanglei/my-skills
 npx skills add swjtu-zhanglei/my-skills --skill '*'
 npx -y skills add swjtu-zhanglei/my-skills --skill '*' -g -a claude-code
-npx skills add swjtu-zhanglei/my-skills --skill fowler-refactoring -y
+npx skills add swjtu-zhanglei/my-skills --skill fowler-refactor -y
 npx skills add https://github.com/swjtu-zhanglei/my-skills --skill '*'
 ```
 
@@ -129,10 +129,10 @@ Hermes Agent：按其文档把 `skills/` 下的文件夹整体复制到对应 sk
 npx skills list
 npx skills check
 npx skills update -y
-npx skills remove fowler-refactoring
-npx skills remove myers-art-of-software-testing
-npx skills remove git-diff-review
-npx skills remove animated-diagram-style
+npx skills remove fowler-refactor
+npx skills remove myers-test-design
+npx skills remove git-diff
+npx skills remove diagram-style
 ```
 
 </details>
@@ -142,7 +142,7 @@ npx skills remove animated-diagram-style
 skill 通过自然语言触发——直接描述任务，或显式点名 skill。
 skill 会**用你的语言回答**（中文、English 均可）。🌏
 
-**🔧 fowler-refactoring**
+**🔧 fowler-refactor**
 
 ```text
 重构这个函数——它有哪些坏味道？该用哪些技法？
@@ -152,7 +152,7 @@ skill 会**用你的语言回答**（中文、English 均可）。🌏
 这个模块现在该重构，还是等发版之后？
 ```
 
-**🧪 myers-art-of-software-testing**
+**🧪 myers-test-design**
 
 ```text
 为下面函数设计测试用例：def is_isosceles_triangle(a, b, c) -> bool
@@ -164,7 +164,7 @@ skill 会**用你的语言回答**（中文、English 均可）。🌏
 评审我现有的测试用例，缺什么补什么。
 ```
 
-**🔍 git-diff-review**
+**🔍 git-diff**
 
 ```text
 我刚改了认证中间件——先给我看 diff，我来审。
@@ -172,18 +172,18 @@ skill 会**用你的语言回答**（中文、English 均可）。🌏
 对照 main 评审这个分支：问题给到 file:line，修复建议用 git diff 块。
 ```
 
-**🎨 animated-diagram-style**
+**🎨 diagram-style**
 
 ```text
-用 $animated-diagram-style 按这种浅色技术风格画审批流程。
+用 $diagram-style 按这种浅色技术风格画审批流程。
 
 用相同风格画类图和 RPC 时序图，保留各自的图形语义。
 
 只交付 HTML 和动态 SVG，不生成 JSON 或位图预览。
 ```
 
-[HTML 查看器模板](./skills/animated-diagram-style/assets/diagram-template.html) ·
-[动态 SVG 模板](./skills/animated-diagram-style/assets/diagram-template.svg)
+[HTML 查看器模板](./skills/diagram-style/assets/diagram-template.html) ·
+[动态 SVG 模板](./skills/diagram-style/assets/diagram-template.svg)
 （任一文件下载后均可独立用浏览器打开）。
 
 > 📋 重构与测试输出简明表格，代码评审输出真实 diff；
@@ -198,18 +198,18 @@ my-skills/
 ├── LICENSE
 ├── package.json
 └── skills/
-    ├── fowler-refactoring/
+    ├── fowler-refactor/
     │   ├── SKILL.md          # 操作型工作流（始终加载）
     │   └── references/
     │       ├── smell-map.md  # 24 坏味道 → 技法映射（按需加载）
     │       └── techniques.md # 章节摘要 + 技法索引
-    ├── myers-art-of-software-testing/
+    ├── myers-test-design/
     │   ├── SKILL.md
     │   └── references/
     │       └── examples.md   # 示例 + 方法速查表
-    ├── git-diff-review/
+    ├── git-diff/
     │   └── SKILL.md          # 基于 diff 的交付与评审协议
-    └── animated-diagram-style/
+    └── diagram-style/
         ├── SKILL.md          # 通用绘图风格与双文件交付
         ├── agents/openai.yaml # skill 展示与发现信息
         ├── assets/

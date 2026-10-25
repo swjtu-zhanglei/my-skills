@@ -19,10 +19,10 @@ not summaries, but workflows your coding agent actually executes.
 
 | Skill | 📕 Source | ⚙️ What it does | 💬 Triggers on |
 |-------|-----------|-----------------|----------------|
-| 🔧 [**fowler-refactoring**](./skills/fowler-refactoring/SKILL.md) | Fowler, *Refactoring* 2nd ed. | Diagnoses code smells (24-smell map), picks catalog techniques, executes in verified baby steps under the Two-Hats rule | "refactor this", "code smells?", "clean up without changing behavior" |
-| 🧪 [**myers-art-of-software-testing**](./skills/myers-art-of-software-testing/SKILL.md) | Myers, *The Art of Software Testing* 3rd ed. | Designs destructive test cases: black-box EP + BVA + cause-effect, then white-box branch fill-in; unit and multi-module seam recipes; fixed case tables | "design test cases", "write tests for", "review my test suite" |
-| 🔍 [**git-diff-review**](./skills/git-diff-review/SKILL.md) | Field practice (agent handoff & code review) | Shows every change as real line-by-line `git diff` — stat summary, per-file hunks, risk-ordered review points, verification evidence; no full-file before/after dumps | "show me the diff", "what changed?", "review this branch/commit/PR" |
-| 🎨 [**animated-diagram-style**](./skills/animated-diagram-style/SKILL.md) | Field practice (visual style) | Applies pastel panels, clear typography, and restrained vector motion to architecture, flow, class, sequence, and state diagrams; delivers only HTML + SVG | "use this drawing style", "beautify a class diagram", "animated sequence diagram" |
+| 🔧 [**fowler-refactor**](./skills/fowler-refactor/SKILL.md) | Fowler, *Refactoring* 2nd ed. | Diagnoses code smells (24-smell map), picks catalog techniques, executes in verified baby steps under the Two-Hats rule | "refactor this", "code smells?", "clean up without changing behavior" |
+| 🧪 [**myers-test-design**](./skills/myers-test-design/SKILL.md) | Myers, *The Art of Software Testing* 3rd ed. | Designs destructive test cases: black-box EP + BVA + cause-effect, then white-box branch fill-in; unit and multi-module seam recipes; fixed case tables | "design test cases", "write tests for", "review my test suite" |
+| 🔍 [**git-diff**](./skills/git-diff/SKILL.md) | Field practice (agent handoff & code review) | Shows every change as real line-by-line `git diff` — stat summary, per-file hunks, risk-ordered review points, verification evidence; no full-file before/after dumps | "show me the diff", "what changed?", "review this branch/commit/PR" |
+| 🎨 [**diagram-style**](./skills/diagram-style/SKILL.md) | Field practice (visual style) | Applies pastel panels, clear typography, and restrained vector motion to architecture, flow, class, sequence, and state diagrams; delivers only HTML + SVG | "use this drawing style", "beautify a class diagram", "animated sequence diagram" |
 
 Each skill under `skills/` contains a `SKILL.md` (YAML frontmatter + operational
 instructions); bulky tables move into an optional `references/` directory loaded
@@ -74,9 +74,9 @@ cd /path/to/my-skills
 npx skills add . -l                      # list available skills
 npx skills add . --skill '*'             # all skills, then choose agents
 npx skills add . --skill '*' -g          # all skills, global, choose agents
-npx skills add . --skill fowler-refactoring -y            # one skill
-npx skills add . --skill myers-art-of-software-testing -y
-npx skills add . --skill animated-diagram-style -y
+npx skills add . --skill fowler-refactor -y            # one skill
+npx skills add . --skill myers-test-design -y
+npx skills add . --skill diagram-style -y
 npx -y skills add . --skill '*' -a codex # all skills → Codex + universal
 ```
 
@@ -98,7 +98,7 @@ npm run install:dsh       # ~/.agents/skills/ (read by DSH, Codex, Cursor, ...)
 npx skills add swjtu-zhanglei/my-skills
 npx skills add swjtu-zhanglei/my-skills --skill '*'
 npx -y skills add swjtu-zhanglei/my-skills --skill '*' -g -a claude-code
-npx skills add swjtu-zhanglei/my-skills --skill fowler-refactoring -y
+npx skills add swjtu-zhanglei/my-skills --skill fowler-refactor -y
 npx skills add https://github.com/swjtu-zhanglei/my-skills --skill '*'
 ```
 
@@ -133,10 +133,10 @@ its documentation, keeping the same folder layout.
 npx skills list
 npx skills check
 npx skills update -y
-npx skills remove fowler-refactoring
-npx skills remove myers-art-of-software-testing
-npx skills remove git-diff-review
-npx skills remove animated-diagram-style
+npx skills remove fowler-refactor
+npx skills remove myers-test-design
+npx skills remove git-diff
+npx skills remove diagram-style
 ```
 
 </details>
@@ -146,7 +146,7 @@ npx skills remove animated-diagram-style
 Skills trigger on natural language — describe the task, or name the skill explicitly.
 They answer **in your language** (English, 中文, …). 🌏
 
-**🔧 fowler-refactoring**
+**🔧 fowler-refactor**
 
 ```text
 Refactor this function — what smells does it have and which techniques apply?
@@ -156,7 +156,7 @@ Do an Extract Class on this file, baby steps, behavior unchanged.
 Should I refactor this module now or after the release?
 ```
 
-**🧪 myers-art-of-software-testing**
+**🧪 myers-test-design**
 
 ```text
 Design test cases for: def is_isosceles_triangle(a, b, c) -> bool
@@ -168,7 +168,7 @@ Two modules A→B: give me seam cases and failure-propagation threads.
 Review my existing test suite — what's missing?
 ```
 
-**🔍 git-diff-review**
+**🔍 git-diff**
 
 ```text
 I just changed the auth middleware — show me the diff before I review it.
@@ -176,18 +176,18 @@ I just changed the auth middleware — show me the diff before I review it.
 Review this branch against main: findings at file:line, fixes as git diff blocks.
 ```
 
-**🎨 animated-diagram-style**
+**🎨 diagram-style**
 
 ```text
-Use $animated-diagram-style to draw the approval flow in this pastel technical style.
+Use $diagram-style to draw the approval flow in this pastel technical style.
 
 Apply the same style to a class diagram and an RPC sequence diagram; keep each diagram’s notation.
 
 Deliver HTML and animated SVG only, with no JSON or raster previews.
 ```
 
-[HTML viewer template](./skills/animated-diagram-style/assets/diagram-template.html) ·
-[Animated SVG template](./skills/animated-diagram-style/assets/diagram-template.svg)
+[HTML viewer template](./skills/diagram-style/assets/diagram-template.html) ·
+[Animated SVG template](./skills/diagram-style/assets/diagram-template.svg)
 (download either file and open in a browser).
 
 > 📋 Refactoring and testing produce concise tables; review produces real diffs;
@@ -202,18 +202,18 @@ my-skills/
 ├── LICENSE
 ├── package.json
 └── skills/
-    ├── fowler-refactoring/
+    ├── fowler-refactor/
     │   ├── SKILL.md          # operational workflow (always loaded)
     │   └── references/
     │       ├── smell-map.md  # 24 smells → techniques (loaded on demand)
     │       └── techniques.md # chapter digests + technique index
-    ├── myers-art-of-software-testing/
+    ├── myers-test-design/
     │   ├── SKILL.md
     │   └── references/
     │       └── examples.md   # worked examples + method cheatsheet
-    ├── git-diff-review/
+    ├── git-diff/
     │   └── SKILL.md          # diff-based handoff & review protocol
-    └── animated-diagram-style/
+    └── diagram-style/
         ├── SKILL.md          # diagram style and two-file delivery
         ├── agents/openai.yaml # skill discovery metadata
         ├── assets/

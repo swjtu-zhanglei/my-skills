@@ -1,5 +1,5 @@
 ---
-name: animated-diagram-style
+name: diagram-style
 description: "Draw or restyle architecture diagrams, flowcharts, UML class diagrams, sequence diagrams, and state diagrams in a consistent pastel technical style with crisp vector artwork and restrained animation. Deliver an HTML viewer and an animated SVG. Use for diagram creation, beautification, or requests for this drawing style (架构图、流程图、类图、时序图、状态图、美化、动态高清图)."
 license: MIT
 ---
